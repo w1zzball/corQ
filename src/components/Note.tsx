@@ -17,17 +17,31 @@ const Note: React.FC<NoteProps> = ({ id, text, onDelete, onEdit }) => {
   const nodeRef = React.useRef<HTMLElement>(null);
   const [showDelete, setShowDelete] = useState(false);
 
+  const handleDrag = (e: any) => {
+    console.log("Dragging", e);
+  };
+
   return (
     <Draggable
+      onDrag={handleDrag}
       nodeRef={nodeRef}
       handle=".handle"
       defaultPosition={{ x: 0, y: 0 }}
       scale={1}
     >
-      <div ref={nodeRef} className="note">
+      <div
+        ref={nodeRef}
+        className="note"
+        onMouseEnter={() => setShowDelete(true)}
+        onMouseLeave={() => setShowDelete(false)}
+      >
         <div className="controls">
           <div className="handle"></div>
-          <button className="delete-button" onClick={() => onDelete(id)}>
+          <button
+            className="delete-button"
+            hidden={!showDelete}
+            onClick={() => onDelete(id)}
+          >
             X
           </button>
         </div>
