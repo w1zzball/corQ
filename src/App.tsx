@@ -50,6 +50,11 @@ function App() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
+  // Function to delete a pin
+  const deletePin = (id: string) => {
+    setPins((prevPins) => prevPins.filter((pin) => pin.id !== id));
+  };
+
   // Handle right mouse button down
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default context menu
@@ -120,6 +125,7 @@ function App() {
           start={pin.start}
           end={pin.end}
           colour={pin.colour}
+          onDelete={deletePin}
         />
       ))}
 
