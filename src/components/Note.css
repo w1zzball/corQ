@@ -49,6 +49,7 @@
 }
 
 .note-content {
+  margin-top: 10px;
   flex-grow: 1;
   overflow: auto;
 }

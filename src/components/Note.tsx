@@ -68,6 +68,7 @@ const Note: React.FC<NoteProps> = ({
         handle=".handle"
         scale={1}
         defaultPosition={position}
+        offsetParent={document.body}
       >
         <div className="note-container" style={{ position: "absolute" }}>
           <Resizable
