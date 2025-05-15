@@ -32,17 +32,22 @@
 }
 
 .handle {
-  width: 20px;
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 3px;
+  flex-grow: 1;
+  height: 20px;
+  background-color: #fdeb84;
+  border-radius: 1px;
   cursor: move;
 }
 
 .delete-button {
-  background: none;
+  border-radius: 1px;
+  background-color: #ff4444;
+  position: absolute;
+  height: 20px;
+  right: 10px;
+  /* background: none; */
   border: none;
-  color: #ff4444;
+  color: #fafafa;
   font-weight: bold;
   cursor: pointer;
   padding: 0 5px;
@@ -55,6 +60,8 @@
 }
 
 .todo-text {
+  color: #333;
+  font-weight: 600;
   margin: 0;
   padding: 5px;
   width: 100%;
