@@ -1,10 +1,14 @@
 .note {
+  position: absolute;
+  top: 40px;
+  left: 15px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   color: #333;
   padding: 10px;
   margin: 10px;
   font-family: Arial, sans-serif;
+  max-width: fit-content;
 }
 
 .handle {

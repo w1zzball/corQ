@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import "./Note.css";
 
 export interface NoteProps {
   id: string;
   text: string;
-  position: {
+  position?: {
     x: number;
     y: number;
   };
@@ -16,17 +16,20 @@ export interface NoteProps {
 const Note: React.FC<NoteProps> = ({ id, text, onDelete, onEdit }) => {
   const nodeRef = React.useRef<HTMLElement>(null);
   const [showDelete, setShowDelete] = useState(false);
-
-  const handleDrag = (e: any) => {
-    console.log("Dragging", e);
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const handleDragStop = (e: any, newCoords: { x: number; y: number }) => {
+    setPosition({ x: newCoords.x, y: newCoords.y });
+    console.log("New coordinates", position);
   };
 
   return (
     <Draggable
-      onDrag={handleDrag}
+      onStop={handleDragStop}
       nodeRef={nodeRef}
       handle=".handle"
-      defaultPosition={{ x: 0, y: 0 }}
       scale={1}
     >
       <div
@@ -47,6 +50,9 @@ const Note: React.FC<NoteProps> = ({ id, text, onDelete, onEdit }) => {
         </div>
 
         <p className="note-text">{text || "click here to edit"}</p>
+        <p className="coordinates">
+          {position.x} {position.y}
+        </p>
       </div>
     </Draggable>
   );
