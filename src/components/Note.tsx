@@ -61,75 +61,80 @@ const Note: React.FC<NoteProps> = ({
   };
 
   return (
-    <Draggable
-      onStop={handleDragStop}
-      nodeRef={nodeRef}
-      handle=".handle"
-      scale={1}
-      defaultPosition={position}
-    >
-      <Resizable
-        width={size.width}
-        height={size.height}
-        onResize={onResize}
-        minConstraints={[100, 100]} // Minimum size
-        maxConstraints={[800, 800]} // Maximum size
-        resizeHandles={["se"]} // Only show the bottom-right resize handle
+    <div className="note-wrapper" style={{ position: "absolute" }}>
+      <Draggable
+        onStop={handleDragStop}
+        nodeRef={nodeRef}
+        handle=".handle"
+        scale={1}
+        defaultPosition={position}
       >
-        <div
-          ref={nodeRef}
-          className="note"
-          onMouseEnter={() => setShowDelete(true)}
-          onMouseLeave={() => setShowDelete(false)}
-          style={{
-            width: size.width + "px",
-            height: size.height + "px",
-          }}
-        >
-          <div className="controls">
-            <div className="handle"></div>
-            <button
-              className="delete-button"
-              hidden={!showDelete}
-              onClick={() => onDelete(id)}
+        <div className="note-container" style={{ position: "absolute" }}>
+          <Resizable
+            width={size.width}
+            height={size.height}
+            onResize={onResize}
+            minConstraints={[100, 100]} // Minimum size
+            maxConstraints={[800, 800]} // Maximum size
+            resizeHandles={["se"]} // Only show the bottom-right resize handle
+          >
+            <div
+              ref={nodeRef}
+              className="note"
+              onMouseEnter={() => setShowDelete(true)}
+              onMouseLeave={() => setShowDelete(false)}
+              style={{
+                width: size.width + "px",
+                height: size.height + "px",
+                position: "absolute",
+              }}
             >
-              X
-            </button>
-          </div>
+              <div className="controls">
+                <div className="handle"></div>
+                <button
+                  className="delete-button"
+                  hidden={!showDelete}
+                  onClick={() => onDelete(id)}
+                >
+                  X
+                </button>
+              </div>
 
-          <div className="note-content">
-            {isEditing ? (
-              <input
-                type="text"
-                className="todo-text"
-                value={editText}
-                onChange={(e) => setEditText(e.target.value)}
-                onBlur={() => {
-                  setIsEditing(false);
-                  onEdit(id, editText);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    setIsEditing(false);
-                    onEdit(id, editText);
-                  }
-                }}
-                autoFocus
-              />
-            ) : (
-              <p className="todo-text" onClick={() => setIsEditing(true)}>
-                {text || "Click to edit"}
+              <div className="note-content">
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="todo-text"
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    onBlur={() => {
+                      setIsEditing(false);
+                      onEdit(id, editText);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setIsEditing(false);
+                        onEdit(id, editText);
+                      }
+                    }}
+                    autoFocus
+                  />
+                ) : (
+                  <p className="todo-text" onClick={() => setIsEditing(true)}>
+                    {text || "Click to edit"}
+                  </p>
+                )}
+              </div>
+
+              <p className="coordinates">
+                {Math.round(position.x)},{Math.round(position.y)} | {size.width}
+                x{size.height}
               </p>
-            )}
-          </div>
-
-          <p className="coordinates">
-            {Math.round(position.x)},{Math.round(position.y)} | {size.width}x
-            {size.height}
-          </p>
+            </div>
+          </Resizable>
         </div>
-      </Resizable>
-    </Draggable>
+      </Draggable>
+    </div>
   );
 };
 

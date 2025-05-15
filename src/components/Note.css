@@ -1,40 +1,89 @@
-.note {
+.note-wrapper {
   position: absolute;
-  top: 40px;
-  left: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  color: #333;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 10;
+}
+
+.note-container {
+  position: absolute;
+  z-index: 10;
+}
+
+.note {
+  background-color: #fff4b5;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  margin: 10px;
-  font-family: Arial, sans-serif;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: absolute;
+  overflow: hidden;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
 
 .handle {
-  cursor: move;
-  background-color: #ccc;
-  padding: 5px;
+  width: 20px;
+  height: 10px;
+  background-color: #ddd;
   border-radius: 3px;
+  cursor: move;
 }
 
 .delete-button {
-  background-color: #ff4d4d;
-  position: absolute;
-  color: white;
-  left: 0px;
-  top: 0px;
+  background: none;
   border: none;
-  padding: 5px;
+  color: #ff4444;
+  font-weight: bold;
   cursor: pointer;
-  border-radius: 3px;
+  padding: 0 5px;
 }
 
-.resize-handle {
-  width: 10px;
-  height: 10px;
-  background-color: #ccc;
+.note-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.todo-text {
+  margin: 0;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input.todo-text {
+  border: 1px dashed #aaa;
+  background: transparent;
+  outline: none;
+  font: inherit;
+}
+
+.coordinates {
+  font-size: 10px;
+  color: #999;
+  text-align: right;
+  margin: 0;
+}
+
+/* Style for the resizable handle */
+.react-resizable-handle {
   position: absolute;
+  width: 20px;
+  height: 20px;
   bottom: 0;
   right: 0;
-  cursor: nwse-resize;
+  background-color: transparent;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M6 6H0V4.2H4.2V0H6z" opacity=".3"/></svg>');
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  cursor: se-resize;
 }
