@@ -2,15 +2,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Note from "./components/Note";
+import Button from "./components/Button";
 import "./App.css";
 
 function App() {
   //Notes
   const [notes, setNotes] = useState([
-    { id: uuidv4(), text: "Note 1" },
-    { id: uuidv4(), text: "Note 2" },
-    { id: uuidv4(), text: "Note 3" },
+    { id: uuidv4(), text: "click to edit" },
+    // { id: uuidv4(), text: "Note 2" },
+    // { id: uuidv4(), text: "Note 3" },
   ]);
+  const addNote = () => {
+    setNotes((prevNotes) => [...prevNotes, { id: uuidv4(), text: "New Note" }]);
+  };
   const onDelete = (id: string) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   };
@@ -27,6 +31,7 @@ function App() {
         e.preventDefault();
       }}
     >
+      <Button id="add-note" name="Add Note" handleClick={addNote}></Button>
       {/* Notes */}
       {notes.map((note) => (
         <Note
