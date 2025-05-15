@@ -22,6 +22,8 @@ const Note: React.FC<NoteProps> = ({
   onDelete,
   onEdit,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(text);
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [position, setPosition] = useState({
@@ -32,6 +34,11 @@ const Note: React.FC<NoteProps> = ({
     width: 200,
     height: 200,
   });
+
+  // Update editText when text prop changes
+  useEffect(() => {
+    setEditText(text);
+  }, [text]);
 
   // Update position if initialPosition changes
   useEffect(() => {
@@ -51,12 +58,6 @@ const Note: React.FC<NoteProps> = ({
     { size }: { size: { width: number; height: number } }
   ) => {
     setSize({ width: size.width, height: size.height });
-  };
-
-  // Handle note text editing
-  const handleTextClick = () => {
-    const newText = prompt("Edit note:", text);
-    if (newText !== null) onEdit(id, newText);
   };
 
   return (
@@ -96,8 +97,30 @@ const Note: React.FC<NoteProps> = ({
             </button>
           </div>
 
-          <div className="note-content" onClick={handleTextClick}>
-            <p className="note-text">{text || "click here to edit"}</p>
+          <div className="note-content">
+            {isEditing ? (
+              <input
+                type="text"
+                className="todo-text"
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                onBlur={() => {
+                  setIsEditing(false);
+                  onEdit(id, editText);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setIsEditing(false);
+                    onEdit(id, editText);
+                  }
+                }}
+                autoFocus
+              />
+            ) : (
+              <p className="todo-text" onClick={() => setIsEditing(true)}>
+                {text || "Click to edit"}
+              </p>
+            )}
           </div>
 
           <p className="coordinates">
