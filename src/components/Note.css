@@ -8,7 +8,6 @@
   padding: 10px;
   margin: 10px;
   font-family: Arial, sans-serif;
-  max-width: fit-content;
 }
 
 .handle {
@@ -28,4 +27,14 @@
   padding: 5px;
   cursor: pointer;
   border-radius: 3px;
+}
+
+.resize-handle {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
 }
