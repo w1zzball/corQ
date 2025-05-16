@@ -3,6 +3,7 @@ import Draggable from "react-draggable";
 import "./Note.css";
 import { Resizable } from "react-resizable";
 import "react-resizable/css/styles.css";
+import ReactMarkdown from "react-markdown";
 
 export interface NoteProps {
   id: string;
@@ -121,7 +122,7 @@ const Note: React.FC<NoteProps> = ({
                   />
                 ) : (
                   <p className="note-text" onClick={() => setIsEditing(true)}>
-                    {text || "Click to edit"}
+                    <ReactMarkdown>{text || "Click to edit"}</ReactMarkdown>
                   </p>
                 )}
               </div>
