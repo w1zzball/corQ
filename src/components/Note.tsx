@@ -8,15 +8,19 @@ export interface NoteProps {
   id: string;
   text: string;
   position: { x: number; y: number };
+  zIndex: number;
   onDelete: (id: string) => void;
   onEdit: (id: string, text: string) => void;
   onPositionChange: (id: string, pos: { x: number; y: number }) => void;
+  bringToFront: (id: string) => void;
 }
 
 const Note: React.FC<NoteProps> = ({
   id,
   text,
   position,
+  zIndex,
+  bringToFront,
   onDelete,
   onEdit,
   onPositionChange,
@@ -46,12 +50,18 @@ const Note: React.FC<NoteProps> = ({
   };
 
   return (
-    <div className="note-wrapper" style={{ position: "absolute" }}>
+    <div
+      className="note-wrapper"
+      style={{ position: "absolute", zIndex: zIndex }}
+    >
       <Draggable
         nodeRef={nodeRef}
         handle=".handle"
         scale={1}
         position={position}
+        onStart={() => {
+          bringToFront(id);
+        }}
         onStop={handleDragStop}
         offsetParent={document.body}
       >

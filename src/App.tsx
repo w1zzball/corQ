@@ -6,17 +6,32 @@ import Button from "./components/Button";
 import "./App.css";
 
 function App() {
+  const [zCounter, setZCounter] = useState(0);
   //Notes
   const [notes, setNotes] = useState([
-    { id: uuidv4(), text: "", position: { x: 100, y: 100 } },
+    { id: uuidv4(), text: "", position: { x: 100, y: 100 }, zIndex: 1 },
     // { id: uuidv4(), text: "Note 2" },
     // { id: uuidv4(), text: "Note 3" },
   ]);
   const addNote = () => {
     setNotes((prevNotes) => [
       ...prevNotes,
-      { id: uuidv4(), text: "", position: { x: 100, y: 100 } },
+      {
+        id: uuidv4(),
+        text: "",
+        position: { x: 100, y: 100 },
+        zIndex: zCounter,
+      },
     ]);
+    setZCounter((prevCounter) => prevCounter + 1);
+  };
+  const bringToFront = (id: string) => {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, zIndex: zCounter } : note
+      )
+    );
+    setZCounter((z) => z + 1);
   };
   const onDelete = (id: string) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
@@ -47,6 +62,8 @@ function App() {
           id={note.id}
           text={note.text}
           position={note.position}
+          zIndex={note.zIndex}
+          bringToFront={bringToFront}
           onDelete={onDelete}
           onEdit={onEdit}
           onPositionChange={onPositionChange}
