@@ -2,57 +2,42 @@ import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import "./Note.css";
 import { Resizable } from "react-resizable";
-import "react-resizable/css/styles.css"; // Import the styles for resizable
+import "react-resizable/css/styles.css";
 
 export interface NoteProps {
   id: string;
   text: string;
-  position?: {
-    x: number;
-    y: number;
-  };
+  position: { x: number; y: number };
   onDelete: (id: string) => void;
   onEdit: (id: string, text: string) => void;
+  onPositionChange: (id: string, pos: { x: number; y: number }) => void;
 }
 
 const Note: React.FC<NoteProps> = ({
   id,
   text,
-  position: initialPosition,
+  position,
   onDelete,
   onEdit,
+  onPositionChange,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const [showDelete, setShowDelete] = useState(false);
-  const [position, setPosition] = useState({
-    x: initialPosition?.x || 0,
-    y: initialPosition?.y || 0,
-  });
   const [size, setSize] = useState({
     width: 200,
     height: 200,
   });
 
-  // Update editText when text prop changes
   useEffect(() => {
     setEditText(text);
   }, [text]);
 
-  // Update position if initialPosition changes
-  useEffect(() => {
-    if (initialPosition) {
-      setPosition(initialPosition);
-    }
-  }, [initialPosition]);
-
-  const handleDragStop = (e: any, newCoords: { x: number; y: number }) => {
-    setPosition({ x: newCoords.x, y: newCoords.y });
-    console.log("New coordinates", newCoords);
+  const handleDragStop = (_e: any, data: { x: number; y: number }) => {
+    onPositionChange(id, { x: data.x, y: data.y });
   };
 
-  // Handle resize events
   const onResize = (
     event: React.SyntheticEvent,
     { size }: { size: { width: number; height: number } }
@@ -63,11 +48,11 @@ const Note: React.FC<NoteProps> = ({
   return (
     <div className="note-wrapper" style={{ position: "absolute" }}>
       <Draggable
-        onStop={handleDragStop}
         nodeRef={nodeRef}
         handle=".handle"
         scale={1}
-        defaultPosition={position}
+        position={position}
+        onStop={handleDragStop}
         offsetParent={document.body}
       >
         <div className="note-container" style={{ position: "absolute" }}>
@@ -75,9 +60,9 @@ const Note: React.FC<NoteProps> = ({
             width={size.width}
             height={size.height}
             onResize={onResize}
-            minConstraints={[100, 100]} // Minimum size
-            maxConstraints={[800, 800]} // Maximum size
-            resizeHandles={["se"]} // Only show the bottom-right resize handle
+            minConstraints={[100, 100]}
+            maxConstraints={[800, 800]}
+            resizeHandles={["se"]}
           >
             <div
               ref={nodeRef}
