@@ -101,8 +101,7 @@ const Note: React.FC<NoteProps> = ({
 
               <div className="note-content">
                 {isEditing ? (
-                  <input
-                    type="text"
+                  <textarea
                     className="note-text"
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
@@ -111,12 +110,14 @@ const Note: React.FC<NoteProps> = ({
                       onEdit(id, editText);
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
                         setIsEditing(false);
                         onEdit(id, editText);
                       }
                     }}
                     autoFocus
+                    style={{ width: "100%", height: "100%", resize: "none" }}
                   />
                 ) : (
                   <p className="note-text" onClick={() => setIsEditing(true)}>
