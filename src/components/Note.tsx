@@ -103,7 +103,7 @@ const Note: React.FC<NoteProps> = ({
                 {isEditing ? (
                   <input
                     type="text"
-                    className="-text"
+                    className="note-text"
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
                     onBlur={() => {
