@@ -53,6 +53,9 @@ const Note: React.FC<NoteProps> = ({
     <div
       className="note-wrapper"
       style={{ position: "absolute", zIndex: zIndex }}
+      onClick={() => {
+        bringToFront(id);
+      }}
     >
       <Draggable
         nodeRef={nodeRef}
@@ -100,7 +103,7 @@ const Note: React.FC<NoteProps> = ({
                 {isEditing ? (
                   <input
                     type="text"
-                    className="todo-text"
+                    className="-text"
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
                     onBlur={() => {
@@ -116,7 +119,7 @@ const Note: React.FC<NoteProps> = ({
                     autoFocus
                   />
                 ) : (
-                  <p className="todo-text" onClick={() => setIsEditing(true)}>
+                  <p className="note-text" onClick={() => setIsEditing(true)}>
                     {text || "Click to edit"}
                   </p>
                 )}
