@@ -54,6 +54,10 @@ const Note: React.FC<NoteProps> = ({
     <div
       className="note-wrapper"
       style={{ position: "absolute", zIndex: zIndex }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        bringToFront(id);
+      }}
       onClick={() => {
         bringToFront(id);
       }}

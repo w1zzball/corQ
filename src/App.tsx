@@ -1,8 +1,9 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Note from "./components/Note";
 import Button from "./components/Button";
+import ContextMenu from "./components/ContextMenu";
 import "./App.css";
 
 function App() {
@@ -13,6 +14,11 @@ function App() {
     // { id: uuidv4(), text: "Note 2" },
     // { id: uuidv4(), text: "Note 3" },
   ]);
+  const [contextMenu, setContextMenu] = useState({
+    x: 0,
+    y: 0,
+    visible: false,
+  });
   const addNote = () => {
     setNotes((prevNotes) => [
       ...prevNotes,
@@ -47,13 +53,18 @@ function App() {
     );
   };
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      visible: true,
+    });
+  };
+
   return (
-    <div
-      id="app-container"
-      onContextMenu={(e) => {
-        e.preventDefault();
-      }}
-    >
+    <div id="app-container" onContextMenu={handleContextMenu}>
+      {/* Add Note Button */}
       <Button id="add-note" name="Add Note" handleClick={addNote}></Button>
       {/* Notes */}
       {notes.map((note) => (
@@ -69,6 +80,17 @@ function App() {
           onPositionChange={onPositionChange}
         />
       ))}
+      {contextMenu.visible && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          visible={contextMenu.visible}
+          onClose={() => setContextMenu((cm) => ({ ...cm, visible: false }))}
+        >
+          <div>Delete</div>
+          <div>Edit</div>
+        </ContextMenu>
+      )}
     </div>
   );
 }
