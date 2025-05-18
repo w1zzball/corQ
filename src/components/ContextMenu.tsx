@@ -39,7 +39,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   return (
     <div
       ref={menuRef}
-      className="custom-context-menu"
+      className="context-menu"
       style={{
         position: "fixed",
         top: y,

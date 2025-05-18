@@ -16,26 +16,11 @@ const Button = ({
   classes = [],
   ariaLabel = name,
 }: ButtonProps) => {
-  const [style, setStyle] = useState({});
-
-  const handleMouseEnter = () => {
-    setStyle({
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
-      color: "white",
-    });
-  };
-  const handleMouseLeave = () => {
-    setStyle({});
-  };
-
   return (
     <button
-      className={`btn ${classes.join(" ")}`}
+      className={`${classes.join(" ")}`}
       aria-label={ariaLabel}
       onClick={() => handleClick(id)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={style}
       id={id}
     >
       {name}

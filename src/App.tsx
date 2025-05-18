@@ -87,6 +87,8 @@ function App() {
           visible={contextMenu.visible}
           onClose={() => setContextMenu((cm) => ({ ...cm, visible: false }))}
         >
+          <Button id="add-note" name="Add Note" handleClick={addNote}></Button>
+
           <div>Delete</div>
           <div>Edit</div>
         </ContextMenu>
