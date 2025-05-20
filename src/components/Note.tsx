@@ -14,6 +14,7 @@ export interface NoteProps {
   onEdit: (id: string, text: string) => void;
   onPositionChange: (id: string, pos: { x: number; y: number }) => void;
   bringToFront: (id: string) => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
 }
 
 const Note: React.FC<NoteProps> = ({

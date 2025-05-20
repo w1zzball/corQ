@@ -18,6 +18,7 @@ function App() {
     x: 0,
     y: 0,
     visible: false,
+    targetNoteId: null as string | null,
   });
   const addNote = () => {
     setNotes((prevNotes) => [
@@ -59,6 +60,7 @@ function App() {
       x: e.clientX,
       y: e.clientY,
       visible: true,
+      targetNoteId: null,
     });
   };
 
@@ -78,6 +80,15 @@ function App() {
           onDelete={onDelete}
           onEdit={onEdit}
           onPositionChange={onPositionChange}
+          onContextMenu={(e: React.MouseEvent) => {
+            e.preventDefault();
+            setContextMenu({
+              x: e.clientX,
+              y: e.clientY,
+              visible: true,
+              targetNoteId: note.id, // <-- set the note id
+            });
+          }}
         />
       ))}
       {contextMenu.visible && (
