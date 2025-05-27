@@ -16,7 +16,7 @@ function App() {
   const [zCounter, setZCounter] = useState(0);
   //Notes
   const [notes, setNotes] = useState([
-    { id: uuidv4(), text: "", position: { x: 100, y: 100 }, zIndex: 1 },
+    { id: uuidv4(), text: "", imageUrl: "", position: { x: 100, y: 100 }, zIndex: 1 },
     // { id: uuidv4(), text: "Note 2" },
     // { id: uuidv4(), text: "Note 3" },
   ]);
@@ -38,6 +38,7 @@ function App() {
       {
         id: uuidv4(),
         text: "",
+        imageUrl: "",
         position: { x: 100, y: 100 },
         zIndex: zCounter,
       },
@@ -71,9 +72,11 @@ function App() {
   const onDelete = (id: string) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   };
-  const onEdit = (id: string, text: string) => {
+  const onEdit = (id: string, text: string, imageUrl?: string) => {
     setNotes((prevNotes) =>
-      prevNotes.map((note) => (note.id === id ? { ...note, text } : note))
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, text, imageUrl: imageUrl || note.imageUrl } : note
+      )
     );
   };
   const onPositionChange = (id: string, position: { x: number; y: number }) => {
@@ -94,6 +97,7 @@ function App() {
           <Note
             id={note.id}
             text={note.text}
+            imageUrl={note.imageUrl}
             position={note.position}
             zIndex={note.zIndex}
             bringToFront={bringToFront}
