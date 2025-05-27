@@ -49,15 +49,15 @@
   position: absolute;
   height: 35px;
   width: 35px;
-  top: -20px; /* Increased from -15px to -20px to position higher */
-  right: -20px; /* Changed from 10px to -10px to move outside the container */
+  top: -15px;
+  right: -15px;
   border: none;
   color: #fafafa;
   font-weight: bold;
   cursor: pointer;
   padding: 0 5px;
-  z-index: 100; /* Ensure button stays above other content */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .note-content {
@@ -98,7 +98,6 @@ textarea.note-text {
   margin: 0;
 }
 
-/* Style for the resizable handle */
 .react-resizable-handle {
   position: absolute;
   width: 20px;

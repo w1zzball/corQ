@@ -82,7 +82,7 @@ function App() {
             onDelete={onDelete}
             onEdit={onEdit}
             onPositionChange={onPositionChange}
-            onContextMenu={(e) => handleMenuClick(e, note.id)} // Add this line
+            onContextMenu={(e) => handleMenuClick(e, note.id)}
           />
         </React.Fragment>
       ))}
