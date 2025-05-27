@@ -17,15 +17,14 @@ function App() {
   //Notes
   const [notes, setNotes] = useState([
     { id: uuidv4(), text: "", imageUrl: "", position: { x: 100, y: 100 }, zIndex: 1 },
-    // { id: uuidv4(), text: "Note 2" },
-    // { id: uuidv4(), text: "Note 3" },
   ]);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [currentNoteId, setCurrentNoteId] = useState<string | null>(null);
   const open = Boolean(menuPosition);
-  const handleMenuClick = (event: React.MouseEvent, noteId: string) => {
+  const handleMenuClick = (event: React.MouseEvent, noteId: string | null = null) => {
     event.preventDefault();
+    // Stop propagation to prevent both handlers from firing
+    event.stopPropagation();
     setMenuPosition({ top: event.clientY, left: event.clientX });
     setCurrentNoteId(noteId);
   };
@@ -89,7 +88,8 @@ function App() {
     <div
       id="app-container"
       onContextMenu={(e) => {
-        e.preventDefault();
+        // Only open the global menu when clicking on the background
+        handleMenuClick(e, null);
       }}
     >
       {notes.map((note) => (
@@ -104,7 +104,11 @@ function App() {
             onDelete={onDelete}
             onEdit={onEdit}
             onPositionChange={onPositionChange}
-            onContextMenu={(e) => handleMenuClick(e, note.id)}
+            onContextMenu={(e) => {
+              // Prevent event from reaching app container
+              e.stopPropagation();
+              handleMenuClick(e, note.id);
+            }}
           />
         </React.Fragment>
       ))}
@@ -137,18 +141,29 @@ function App() {
           },
         }}
       >
-        <MenuItem onClick={() => {
-          if (currentNoteId) onDelete(currentNoteId);
-          handleClose();
-        }}>
-          Delete
-        </MenuItem>
-        <MenuItem onClick={() => {
-          if (currentNoteId) duplicateNote(currentNoteId);
-          handleClose();
-        }}>
-          Duplicate
-        </MenuItem>
+        {currentNoteId ? (
+          <>
+            <MenuItem onClick={() => {
+              if (currentNoteId) onDelete(currentNoteId);
+              handleClose();
+            }}>
+              Delete
+            </MenuItem>
+            <MenuItem onClick={() => {
+              if (currentNoteId) duplicateNote(currentNoteId);
+              handleClose();
+            }}>
+              Duplicate
+            </MenuItem>
+          </>
+        ) : (
+          <MenuItem onClick={() => {
+            addNote();
+            handleClose();
+          }}>
+            Add Note
+          </MenuItem>
+        )}
         {/* Add more menu items as needed */}
       </Menu>
     </div>
