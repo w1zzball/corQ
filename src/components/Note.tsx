@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import ImageIcon from "@mui/icons-material/Image";
 import LinkIcon from "@mui/icons-material/Link";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -48,7 +49,6 @@ const Note: React.FC<NoteProps> = ({
   const [tempImageUrl, setTempImageUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const nodeRef = React.useRef<HTMLDivElement>(null);
-  const [showDelete, setShowDelete] = useState(false);
   const [size, setSize] = useState({
     width: 200,
     height: 200,
@@ -149,8 +149,6 @@ const Note: React.FC<NoteProps> = ({
             <div
               ref={nodeRef}
               className="note"
-              onMouseEnter={() => setShowDelete(true)}
-              onMouseLeave={() => setShowDelete(false)}
               style={{
                 width: size.width + "px",
                 height: size.height + "px",
@@ -183,14 +181,18 @@ const Note: React.FC<NoteProps> = ({
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   )}
+                  <IconButton
+                    className="mui-delete-button"
+                    onClick={() => onDelete(id)}
+                    color="error"
+                    size="small"
+                    aria-label="delete note"
+                    title="Delete note"
+                  >
+                    <CloseIcon />
+                  </IconButton>
                 </div>
-                <button
-                  className="delete-button"
-                  hidden={!showDelete}
-                  onClick={() => onDelete(id)}
-                >
-                  X
-                </button>
+
               </div>
 
               <div className="note-content">
