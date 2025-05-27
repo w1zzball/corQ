@@ -21,14 +21,16 @@ function App() {
     // { id: uuidv4(), text: "Note 3" },
   ]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [currentNoteId, setCurrentNoteId] = useState<string | null>(null);
-  const open = Boolean(anchorEl);
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, noteId: string) => {
-    setAnchorEl(event.currentTarget);
+  const open = Boolean(menuPosition);
+  const handleMenuClick = (event: React.MouseEvent, noteId: string) => {
+    event.preventDefault();
+    setMenuPosition({ top: event.clientY, left: event.clientX });
     setCurrentNoteId(noteId);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setMenuPosition(null);
   };
   const addNote = () => {
     setNotes((prevNotes) => [
@@ -42,6 +44,22 @@ function App() {
     ]);
     setZCounter((prevCounter) => prevCounter + 1);
   };
+  const duplicateNote = (id: string) => {
+    const noteToDuplicate = notes.find((note) => note.id === id);
+    if (noteToDuplicate) {
+      const newNote = {
+        ...noteToDuplicate,
+        id: uuidv4(),
+        position: {
+          x: noteToDuplicate.position.x + 20, // Offset the position slightly
+          y: noteToDuplicate.position.y + 20,
+        },
+        zIndex: zCounter,
+      };
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+      setZCounter((prevCounter) => prevCounter + 1);
+    }
+  }
   const bringToFront = (id: string) => {
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
@@ -102,12 +120,13 @@ function App() {
         <AddIcon />
       </Fab>
 
-      {/* Move the Menu outside the note mapping loop */}
+      {/* Menu positioned at mouse cursor */}
       <Menu
         id="note-context-menu"
-        anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={menuPosition ? { top: menuPosition.top, left: menuPosition.left } : undefined}
         slotProps={{
           list: {
             'aria-labelledby': 'context-menu',
@@ -119,6 +138,12 @@ function App() {
           handleClose();
         }}>
           Delete
+        </MenuItem>
+        <MenuItem onClick={() => {
+          if (currentNoteId) duplicateNote(currentNoteId);
+          handleClose();
+        }}>
+          Duplicate
         </MenuItem>
         {/* Add more menu items as needed */}
       </Menu>
