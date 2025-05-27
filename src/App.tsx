@@ -9,6 +9,8 @@ import "./App.css";
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab';
 
 function App() {
   const [zCounter, setZCounter] = useState(0);
@@ -84,6 +86,22 @@ function App() {
           />
         </React.Fragment>
       ))}
+
+      {/* Add Floating Action Button for creating new notes */}
+      <Fab
+        color="primary"
+        aria-label="add note"
+        onClick={addNote}
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 9999
+        }}
+      >
+        <AddIcon />
+      </Fab>
+
       {/* Move the Menu outside the note mapping loop */}
       <Menu
         id="note-context-menu"
