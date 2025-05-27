@@ -2,8 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Note from "./components/Note";
-import Button from "./components/Button";
+// import Button from "./components/Button";
+
+
 import "./App.css";
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 function App() {
   const [zCounter, setZCounter] = useState(0);
@@ -13,6 +18,16 @@ function App() {
     // { id: uuidv4(), text: "Note 2" },
     // { id: uuidv4(), text: "Note 3" },
   ]);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [currentNoteId, setCurrentNoteId] = useState<string | null>(null);
+  const open = Boolean(anchorEl);
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, noteId: string) => {
+    setAnchorEl(event.currentTarget);
+    setCurrentNoteId(noteId);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const addNote = () => {
     setNotes((prevNotes) => [
       ...prevNotes,
@@ -54,21 +69,41 @@ function App() {
         e.preventDefault();
       }}
     >
-      <Button id="add-note" name="Add Note" handleClick={addNote}></Button>
-      {/* Notes */}
       {notes.map((note) => (
-        <Note
-          key={note.id}
-          id={note.id}
-          text={note.text}
-          position={note.position}
-          zIndex={note.zIndex}
-          bringToFront={bringToFront}
-          onDelete={onDelete}
-          onEdit={onEdit}
-          onPositionChange={onPositionChange}
-        />
+        <React.Fragment key={note.id}>
+          <Note
+            id={note.id}
+            text={note.text}
+            position={note.position}
+            zIndex={note.zIndex}
+            bringToFront={bringToFront}
+            onDelete={onDelete}
+            onEdit={onEdit}
+            onPositionChange={onPositionChange}
+            onContextMenu={(e) => handleMenuClick(e, note.id)} // Add this line
+          />
+        </React.Fragment>
       ))}
+      {/* Move the Menu outside the note mapping loop */}
+      <Menu
+        id="note-context-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'context-menu',
+          },
+        }}
+      >
+        <MenuItem onClick={() => {
+          if (currentNoteId) onDelete(currentNoteId);
+          handleClose();
+        }}>
+          Delete
+        </MenuItem>
+        {/* Add more menu items as needed */}
+      </Menu>
     </div>
   );
 }

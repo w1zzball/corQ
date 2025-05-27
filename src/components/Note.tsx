@@ -14,6 +14,7 @@ export interface NoteProps {
   onEdit: (id: string, text: string) => void;
   onPositionChange: (id: string, pos: { x: number; y: number }) => void;
   bringToFront: (id: string) => void;
+  onContextMenu?: (e: React.MouseEvent) => void; // Add this prop
 }
 
 const Note: React.FC<NoteProps> = ({
@@ -25,6 +26,7 @@ const Note: React.FC<NoteProps> = ({
   onDelete,
   onEdit,
   onPositionChange,
+  onContextMenu, // Destructure the new prop
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
@@ -69,7 +71,14 @@ const Note: React.FC<NoteProps> = ({
         onStop={handleDragStop}
         offsetParent={document.body}
       >
-        <div className="note-container" style={{ position: "absolute" }}>
+        <div
+          className="note-container"
+          style={{
+            transform: `translate(${position.x}px, ${position.y}px)`,
+            zIndex: zIndex,
+          }}
+          onContextMenu={onContextMenu} // Add this line
+        >
           <Resizable
             width={size.width}
             height={size.height}
