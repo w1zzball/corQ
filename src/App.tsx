@@ -94,8 +94,8 @@ function App() {
         onClick={addNote}
         style={{
           position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
+          top: '2rem',
+          left: '2rem',
           zIndex: 9999
         }}
       >

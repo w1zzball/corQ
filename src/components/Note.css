@@ -5,11 +5,13 @@
   width: 0;
   height: 0;
   z-index: 10;
+  overflow: visible;
 }
 
 .note-container {
   position: absolute;
   z-index: 10;
+  overflow: visible;
 }
 
 .note {
@@ -22,13 +24,15 @@
   flex-direction: column;
   box-sizing: border-box;
   position: absolute;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .controls {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+  position: relative;
+  overflow: visible;
 }
 
 .handle {
@@ -40,17 +44,20 @@
 }
 
 .delete-button {
-  border-radius: 1px;
+  border-radius: 50%;
   background-color: #ff4444;
   position: absolute;
-  height: 20px;
-  right: 10px;
-  /* background: none; */
+  height: 35px;
+  width: 35px;
+  top: -20px; /* Increased from -15px to -20px to position higher */
+  right: -20px; /* Changed from 10px to -10px to move outside the container */
   border: none;
   color: #fafafa;
   font-weight: bold;
   cursor: pointer;
   padding: 0 5px;
+  z-index: 100; /* Ensure button stays above other content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
 }
 
 .note-content {
